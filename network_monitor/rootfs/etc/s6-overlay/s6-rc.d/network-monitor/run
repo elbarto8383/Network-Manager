@@ -14,6 +14,5 @@ export DEBUG=false
 
 echo "[network-monitor] Starting..."
 echo "[network-monitor] Network: ${NETWORK_RANGE}"
-echo "[network-monitor] Scan every: ${SCAN_INTERVAL_HOURS}h"
 
 cd /app && exec python3 main.py

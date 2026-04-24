@@ -18,4 +18,4 @@ COPY rootfs/main.py /app/main.py
 COPY rootfs/static/ /app/static/
 COPY rootfs/etc/ /etc/
 
-RUN chmod +x /etc/services.d/network-monitor/run
+RUN chmod +x /etc/s6-overlay/s6-rc.d/network-monitor/run
