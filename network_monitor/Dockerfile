@@ -6,10 +6,11 @@ RUN apk add --no-cache \
     net-tools \
     nmap \
     curl \
-    jq
+    jq \
+    py3-pip
 
 COPY rootfs/requirements.txt /tmp/requirements.txt
-RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
 
 COPY rootfs/ /app/
 
