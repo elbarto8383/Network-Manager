@@ -2,15 +2,16 @@ ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
 RUN apk add --no-cache \
+    python3 \
+    py3-pip \
     iputils \
     net-tools \
     nmap \
     curl \
-    jq \
-    py3-pip
+    jq
 
 COPY rootfs/requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
 
 COPY rootfs/app/ /app/app/
 COPY rootfs/main.py /app/main.py

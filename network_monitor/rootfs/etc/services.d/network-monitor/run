@@ -1,18 +1,19 @@
-#!/usr/bin/with-contenv bashio
+#!/bin/bash
+set -e
 
-CONFIG_FILE=/data/options.json
+CONFIG=/data/options.json
 
-export NETWORK_RANGE=$(bashio::config 'network_range')
-export SCAN_INTERVAL_HOURS=$(bashio::config 'scan_interval_hours')
-export OFFLINE_THRESHOLD_HOURS=$(bashio::config 'offline_threshold_hours')
-export TELEGRAM_BOT_TOKEN=$(bashio::config 'telegram_bot_token')
-export TELEGRAM_CHAT_ID=$(bashio::config 'telegram_chat_id')
-export API_KEY=$(bashio::config 'api_key')
+export NETWORK_RANGE=$(jq --raw-output '.network_range // "192.168.1.0/24"' "${CONFIG}")
+export SCAN_INTERVAL_HOURS=$(jq --raw-output '.scan_interval_hours // 1' "${CONFIG}")
+export OFFLINE_THRESHOLD_HOURS=$(jq --raw-output '.offline_threshold_hours // 2' "${CONFIG}")
+export TELEGRAM_BOT_TOKEN=$(jq --raw-output '.telegram_bot_token // ""' "${CONFIG}")
+export TELEGRAM_CHAT_ID=$(jq --raw-output '.telegram_chat_id // ""' "${CONFIG}")
+export API_KEY=$(jq --raw-output '.api_key // ""' "${CONFIG}")
 export FLASK_PORT=5000
 export DEBUG=false
 
-bashio::log.info "Network Monitor starting..."
-bashio::log.info "Network: ${NETWORK_RANGE}"
-bashio::log.info "Scan interval: ${SCAN_INTERVAL_HOURS}h"
+echo "[network-monitor] Starting..."
+echo "[network-monitor] Network: ${NETWORK_RANGE}"
+echo "[network-monitor] Scan every: ${SCAN_INTERVAL_HOURS}h"
 
 cd /app && exec python3 main.py
