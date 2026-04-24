@@ -34,5 +34,4 @@
     "telegram_chat_id": "str?",
     "api_key": "str"
   },
-  "requirements": ["ghcr.io/home-assistant/base-python:3.11"]
 }
