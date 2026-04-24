@@ -4,16 +4,18 @@ FROM ${BUILD_FROM}
 RUN apk add --no-cache \
     iputils \
     net-tools \
+    nmap \
     curl \
-    jq
+    jq \
+    py3-pip
+
+COPY rootfs/requirements.txt /tmp/requirements.txt
+RUN pip3 install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
+
+COPY rootfs/ /app/
+
+RUN chmod +x /app/run.sh
 
 WORKDIR /app
-
-COPY rootfs/requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY rootfs/ ./
-
-RUN chmod a+x /app/run.sh
 
 CMD ["/app/run.sh"]
