@@ -34,4 +34,4 @@ else
     echo "📱 Telegram notifications: Disabled"
 fi
 
-python main.py
+cd /app && python main.py
