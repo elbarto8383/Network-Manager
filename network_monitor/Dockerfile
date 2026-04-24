@@ -12,10 +12,9 @@ RUN apk add --no-cache \
 COPY rootfs/requirements.txt /tmp/requirements.txt
 RUN python3 -m pip install --no-cache-dir --break-system-packages -r /tmp/requirements.txt
 
-COPY rootfs/ /app/
+COPY rootfs/app/ /app/app/
+COPY rootfs/main.py /app/main.py
+COPY rootfs/static/ /app/static/
+COPY rootfs/etc/ /etc/
 
-RUN chmod +x /app/run.sh
-
-WORKDIR /app
-
-CMD ["/app/run.sh"]
+RUN chmod +x /etc/services.d/network-monitor/run
