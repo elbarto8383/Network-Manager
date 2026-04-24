@@ -5,7 +5,10 @@ from . import db, scanner, notifier
 
 def create_app():
     app = Flask(__name__, static_folder="../static", static_url_path="/static")
-    API_KEY = os.getenv("API_KEY", "change-me-in-env")
+    API_KEY = os.getenv("API_KEY", "")
+
+    if not API_KEY:
+        print("[-] WARNING: API_KEY not set! Set it in addon options.")
 
     def require_api_key(f):
         @wraps(f)
@@ -30,7 +33,9 @@ def create_app():
     @require_api_key
     def trigger_scan():
         """Esegui una scansione manuale."""
-        network_range = request.json.get("network_range", "192.168.1.0/24") if request.json else "192.168.1.0/24"
+        network_range = os.getenv("NETWORK_RANGE", "192.168.1.0/24")
+        if request.json:
+            network_range = request.json.get("network_range", network_range)
         changes = scanner.full_scan(network_range)
         return jsonify({"status": "ok", "changes": changes})
 

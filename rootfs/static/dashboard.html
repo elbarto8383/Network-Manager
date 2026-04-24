@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,6 +32,7 @@
             font-size: 14px;
         }
         button:hover { background: #764ba2; }
+        button:disabled { background: #ccc; cursor: not-allowed; }
 
         .grid {
             display: grid;
@@ -92,6 +93,13 @@
             border-radius: 5px;
             margin-bottom: 20px;
         }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -104,7 +112,7 @@
             </div>
         </header>
 
-        <div id="error" class="error" style="display: none;"></div>
+        <div id="message" style="display: none;"></div>
 
         <div class="grid">
             <div class="stat-card">
@@ -155,9 +163,10 @@
             }
         }
 
-        function showError(msg) {
-            const el = document.getElementById('error');
+        function showMessage(msg, type = 'error') {
+            const el = document.getElementById('message');
             el.textContent = msg;
+            el.className = type;
             el.style.display = 'block';
             setTimeout(() => el.style.display = 'none', 5000);
         }
@@ -184,7 +193,7 @@
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
                 return await res.json();
             } catch (err) {
-                showError(`Error: ${err.message}`);
+                showMessage(`Error: ${err.message}`, 'error');
                 return null;
             }
         }
@@ -232,7 +241,7 @@
 
             const result = await apiCall('/api/scan', 'POST', {});
             if (result) {
-                showError('Scan completato!');
+                showMessage('Scan completed! 🎉', 'success');
                 await new Promise(r => setTimeout(r, 1000));
                 await loadDevices();
             }
@@ -243,7 +252,7 @@
 
         // Load on startup
         loadDevices();
-        setInterval(loadDevices, 30000); // Refresh ogni 30s
+        setInterval(loadDevices, 30000); // Refresh every 30s
     </script>
 </body>
 </html>

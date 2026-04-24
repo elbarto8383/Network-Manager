@@ -2,32 +2,36 @@ import ipaddress
 import subprocess
 import re
 import json
+import os
 from pathlib import Path
 from urllib.request import urlopen
 from . import db
 
-MAC_OUI_DB = Path(__file__).parent.parent / "mac_oui.json"
+MAC_OUI_DB = Path("/data/mac_oui.json")
 
 def load_mac_oui():
     """Carica il database dei MAC OUI."""
     if not MAC_OUI_DB.exists():
         download_mac_oui()
 
-    with open(MAC_OUI_DB) as f:
-        return json.load(f)
+    try:
+        with open(MAC_OUI_DB) as f:
+            return json.load(f)
+    except:
+        return {}
 
 def download_mac_oui():
-    """Scarica il database dei MAC OUI da un server (prima volta)."""
+    """Scarica il database dei MAC OUI (prima volta)."""
     try:
+        print("[*] Downloading MAC OUI database...")
         url = "https://raw.githubusercontent.com/manishrawat05/MAC-OUI/main/mac_oui.json"
         response = urlopen(url, timeout=10)
         oui_data = json.loads(response.read())
         with open(MAC_OUI_DB, 'w') as f:
             json.dump(oui_data, f)
-        print(f"[+] MAC OUI database scaricato: {MAC_OUI_DB}")
+        print(f"[+] MAC OUI database downloaded: {MAC_OUI_DB}")
     except Exception as e:
-        print(f"[-] Errore nel download MAC OUI: {e}")
-        return {}
+        print(f"[-] Error downloading MAC OUI: {e}")
 
 def get_manufacturer(mac):
     """Ritorna il produttore dal MAC address."""
@@ -43,9 +47,13 @@ def get_manufacturer(mac):
 def scan_network(network_range="192.168.1.0/24"):
     """Scansiona la rete e ritorna i device trovati."""
     devices = {}
+    found = 0
 
     try:
-        for ip in ipaddress.IPv4Network(network_range, strict=False).hosts():
+        network = ipaddress.IPv4Network(network_range, strict=False)
+        print(f"[*] Scanning {network_range}...")
+
+        for ip in network.hosts():
             try:
                 result = subprocess.run(
                     ["ping", "-c", "1", "-W", "1", str(ip)],
@@ -60,12 +68,14 @@ def scan_network(network_range="192.168.1.0/24"):
                             'ip': str(ip),
                             'manufacturer': manufacturer
                         }
+                        found += 1
+                        print(f"[+] Found: {ip} ({mac}) - {manufacturer or 'Unknown'}")
             except:
                 continue
 
-        print(f"[+] Scan completato: {len(devices)} device trovati")
+        print(f"[+] Scan complete: {found} devices found")
     except Exception as e:
-        print(f"[-] Errore durante lo scan: {e}")
+        print(f"[-] Scan error: {e}")
 
     return devices
 
