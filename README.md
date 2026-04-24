@@ -11,7 +11,7 @@ Monitor your network devices, track IP changes, and receive Telegram notificatio
 
 If this addon saves you time, consider buying me a coffee!
 
-[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=digraziabartolomeo%40gmail.com&currency_code=EUR)
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/elbarto83)
 
 ---
 
@@ -223,4 +223,4 @@ MIT — free to use, modify, and distribute.
 
 If this project is useful to you, a small donation keeps it going!
 
-[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/donate/?business=digraziabartolomeo%40gmail.com&currency_code=EUR)
+[![Donate with PayPal](https://img.shields.io/badge/Donate-PayPal-00457C?logo=paypal&logoColor=white)](https://www.paypal.com/paypalme/elbarto83)
