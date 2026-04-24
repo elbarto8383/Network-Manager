@@ -2,7 +2,7 @@ name: "Network Monitor"
 version: "1.0.0"
 slug: "network_monitor"
 description: "Monitor your network devices and track IP changes with Telegram notifications"
-url: "https://github.com/elbarto8383/network_manager"
+url: "https://github.com/elbarto8383/network_monitor"
 startup: services
 boot: auto
 privileged:
@@ -14,9 +14,13 @@ arch:
   - armhf
   - armv7
 ports:
-  5000/tcp: 5000
+  5004/tcp: 5004
 ports_description:
-  5000/tcp: "Network Monitor Web Interface"
+  5004/tcp: "Network Monitor Web Interface"
+ingress: true
+ingress_port: 5004
+panel_icon: mdi:lan
+panel_title: Network Monitor
 options:
   network_range: "192.168.1.0/24"
   scan_interval_hours: 1

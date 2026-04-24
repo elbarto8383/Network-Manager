@@ -24,3 +24,7 @@ build/
 network.db
 mac_oui.json
 *.log
+.DS_Store
+.DS_Store
+network_monitor/rootfs/.DS_Store
+.DS_Store
